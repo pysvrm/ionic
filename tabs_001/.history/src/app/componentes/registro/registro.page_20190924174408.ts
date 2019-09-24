@@ -60,7 +60,6 @@ export class RegistroPage implements OnInit, OnDestroy {
         registrosUsuario = resReg.docs.length;
         resReg.forEach(resRegUnit => {
           this.inquilinoIdLocal = resRegUnit.data() as InquilinoInterface;
-          console.log('resRegUnit.id=>' + resRegUnit.id);
           this.inquilinoIdLocal.id = resRegUnit.id;
         });
       });
@@ -71,12 +70,11 @@ export class RegistroPage implements OnInit, OnDestroy {
         this.presentAlert();
       }else{
         console.log("Generar Registro");
-        await this.deptoServ.getBusquedaDeptoAsync(this.inquilinoLocal.torre, this.inquilinoLocal.depto).then(resDept => {
+        this.deptoServ.getBusquedaDeptoAsync(this.inquilinoLocal.torre, this.inquilinoLocal.depto).then(resDept => {
           console.log('Entra a validar=>' + resDept);
           registrosUsuario = resDept.docs.length;
           resDept.forEach(resDeptUnit => {
             this.deptoLocal = resDeptUnit.data() as deptoInterface;
-            console.log('resDeptUnit.data()' + resDeptUnit.id );
             this.deptoLocal.id = resDeptUnit.id;
           });
         });
@@ -89,7 +87,7 @@ export class RegistroPage implements OnInit, OnDestroy {
 
 
       }
-      //console.log("inquilino local 02::" + this.inquilinoIdLocal.id);
+      console.log("inquilino local 02::" + this.inquilinoIdLocal.id);
       console.log("inquilino local 03::" + this.deptoLocal.id);
     } catch (error) {
       console.log('Error' + error);

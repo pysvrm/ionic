@@ -76,7 +76,7 @@ export class RegistroPage implements OnInit, OnDestroy {
           registrosUsuario = resDept.docs.length;
           resDept.forEach(resDeptUnit => {
             this.deptoLocal = resDeptUnit.data() as deptoInterface;
-            console.log('resDeptUnit.data()' + resDeptUnit.id );
+            
             this.deptoLocal.id = resDeptUnit.id;
           });
         });
@@ -89,7 +89,7 @@ export class RegistroPage implements OnInit, OnDestroy {
 
 
       }
-      //console.log("inquilino local 02::" + this.inquilinoIdLocal.id);
+      console.log("inquilino local 02::" + this.inquilinoIdLocal.id);
       console.log("inquilino local 03::" + this.deptoLocal.id);
     } catch (error) {
       console.log('Error' + error);

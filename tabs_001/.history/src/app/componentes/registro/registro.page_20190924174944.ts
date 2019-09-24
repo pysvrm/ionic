@@ -89,7 +89,7 @@ export class RegistroPage implements OnInit, OnDestroy {
 
 
       }
-      //console.log("inquilino local 02::" + this.inquilinoIdLocal.id);
+      console.log("inquilino local 02::" + this.inquilinoIdLocal.id);
       console.log("inquilino local 03::" + this.deptoLocal.id);
     } catch (error) {
       console.log('Error' + error);
