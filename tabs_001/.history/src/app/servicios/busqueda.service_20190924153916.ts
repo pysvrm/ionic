@@ -11,7 +11,6 @@ export class BusquedaService {
 
   private inquilinosCollection: AngularFirestoreCollection<InquilinoInterface>;
   private idInquilino : string;
-  public inquilinoLocal = {} as InquilinoInterface;
   
   constructor(private db: AngularFirestore) {
     this.inquilinosCollection = db.collection('sirv_c_inquilino');
@@ -64,8 +63,23 @@ export class BusquedaService {
   async getBusquedaInquilinoNombre(nombre:string,apellido:string) {
     try {
       console.log('Nombre=>'+ nombre +' Apellido=>'+apellido);
-      var data: InquilinoInterface;
-      const snapshotResult = await this.db.collection('sirv_c_inquilino').ref.where('nombre', '==', nombre).where('apellido', '==', apellido).get();
+      const snapshotResult = await this.db.collection('sirv_c_inquilino').ref.where('nombre', '==', nombre).where('apellido', '==', apellido)
+      .get()
+      .then(res => {
+        console.log('Entra a validar=>'+res);
+        if(res.docs.length == 0){
+          //no documents found
+        }else{
+          //you got some documents
+          res.forEach(shop => {
+            console.log(shop.id);
+            console.log(shop.data());
+          })
+        }
+      }).catch(err => {
+        console.log('something went wrong '+ err)
+      });
+      console.log('Termina consulta por nombre=>'+ snapshotResult);
       return snapshotResult;
     } catch (error) {
       console.log('Error al devolver los datos' + error);

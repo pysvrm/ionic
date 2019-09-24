@@ -53,23 +53,23 @@ export class RegistroPage implements OnInit, OnDestroy {
     var ddMMyyyy = this.datePipe.transform(new Date(), "dd-MM-yyyy hh:mm:ss ");
     var idInquilino: string;
     try {
-      await this.busquedaServ.getBusquedaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).then(res => {
+      this.busquedaServ.getBusquedaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).then(res => {
         console.log('Entra a validar=>'+res);
         if(res.docs.length == 0){
+          //no documents found
           console.log("No existe registro");
         }else{
-            res.forEach(shop => {
+          //you got some documents
+          res.forEach(shop => {
             console.log("id====>"+shop.id);
             console.log("Objeto====>"+shop.data());
-            this.inquilinoIdLocal = shop.data() as InquilinoInterface;
-            //console.log("inquilino local::"+this.inquilinoLocal.email);
+            this.inquilinoLocal = shop.data() as InquilinoInterface;
+            console.log("inquilino local::"+this.inquilinoLocal.email);
           })
         }
       }).catch(err => {
         console.log('something went wrong '+ err)
       });
-      console.log("inquilino local 02::"+this.inquilinoIdLocal.email);
-
     } catch (error) {
       console.log('Error' + error);
     }

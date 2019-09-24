@@ -13,6 +13,9 @@ import { NavController, LoadingController, AlertController } from "@ionic/angula
 import { VisitaInterface } from 'src/app/models/visita.interface';
 import { DatePipe } from '@angular/common';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { async } from 'q';
+
+
 
 @Component({
   selector: 'app-registro',
@@ -52,31 +55,34 @@ export class RegistroPage implements OnInit, OnDestroy {
   async registraVisitaInquilino() {
     var ddMMyyyy = this.datePipe.transform(new Date(), "dd-MM-yyyy hh:mm:ss ");
     var idInquilino: string;
-    try {
-      await this.busquedaServ.getBusquedaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).then(res => {
-        console.log('Entra a validar=>'+res);
-        if(res.docs.length == 0){
-          console.log("No existe registro");
-        }else{
-            res.forEach(shop => {
-            console.log("id====>"+shop.id);
-            console.log("Objeto====>"+shop.data());
-            this.inquilinoIdLocal = shop.data() as InquilinoInterface;
-            //console.log("inquilino local::"+this.inquilinoLocal.email);
-          })
-        }
-      }).catch(err => {
-        console.log('something went wrong '+ err)
-      });
-      console.log("inquilino local 02::"+this.inquilinoIdLocal.email);
 
-    } catch (error) {
-      console.log('Error' + error);
-    }
+
+
+    let miPrimeraPromise = new Promise((resolve, reject) => {
+      // Llamamos a resolve(...) cuando lo que estabamos haciendo finaliza con éxito, y reject(...) cuando falla.
+      // En este ejemplo, usamos setTimeout(...) para simular código asíncrono. 
+      // En la vida real, probablemente uses algo como XHR o una API HTML5.
+      try {
+        const snapshot = await this.busquedaServ.getBusquedaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).get();  
+      } catch (error) {
+       console.log('Error'); 
+      }
+      
+    });
+    
+    miPrimeraPromise.then((successMessage) => {
+      // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
+      // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
+      console.log("¡Sí! " + successMessage);
+    });
 
 
   }
 
+  
+
+  
+  
 
   async presentAlert() {
     const alert = await this.alertController.create({

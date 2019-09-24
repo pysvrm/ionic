@@ -66,7 +66,8 @@ export class BusquedaService {
       console.log('Nombre=>'+ nombre +' Apellido=>'+apellido);
       var data: InquilinoInterface;
       const snapshotResult = await this.db.collection('sirv_c_inquilino').ref.where('nombre', '==', nombre).where('apellido', '==', apellido).get();
-      return snapshotResult;
+      console.log("inquilino local 02::"+this.inquilinoLocal.email);
+      return this.inquilinoLocal;
     } catch (error) {
       console.log('Error al devolver los datos' + error);
     }

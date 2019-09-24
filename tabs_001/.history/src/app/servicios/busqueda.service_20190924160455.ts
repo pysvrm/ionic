@@ -65,8 +65,26 @@ export class BusquedaService {
     try {
       console.log('Nombre=>'+ nombre +' Apellido=>'+apellido);
       var data: InquilinoInterface;
-      const snapshotResult = await this.db.collection('sirv_c_inquilino').ref.where('nombre', '==', nombre).where('apellido', '==', apellido).get();
-      return snapshotResult;
+      const snapshotResult = await this.db.collection('sirv_c_inquilino').ref.where('nombre', '==', nombre).where('apellido', '==', apellido)
+      .get()
+      .then(res => {
+        console.log('Entra a validar=>'+res);
+        if(res.docs.length == 0){
+          //no documents found
+        }else{
+          //you got some documents
+          res.forEach(shop => {
+            console.log("id====>"+shop.id);
+            console.log("Objeto====>"+shop.data());
+            this.inquilinoLocal = shop.data() as InquilinoInterface;
+            console.log("inquilino local::"+this.inquilinoLocal.email);
+          })
+        }
+      }).catch(err => {
+        console.log('something went wrong '+ err)
+      });
+      console.log("inquilino local 02::"+this.inquilinoLocal.email);
+      return this.inquilinoLocal;
     } catch (error) {
       console.log('Error al devolver los datos' + error);
     }

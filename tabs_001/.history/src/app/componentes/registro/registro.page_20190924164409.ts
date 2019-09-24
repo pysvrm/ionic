@@ -53,7 +53,7 @@ export class RegistroPage implements OnInit, OnDestroy {
     var ddMMyyyy = this.datePipe.transform(new Date(), "dd-MM-yyyy hh:mm:ss ");
     var idInquilino: string;
     try {
-      await this.busquedaServ.getBusquedaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).then(res => {
+      this.busquedaServ.getBusquedaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).then(res => {
         console.log('Entra a validar=>'+res);
         if(res.docs.length == 0){
           console.log("No existe registro");

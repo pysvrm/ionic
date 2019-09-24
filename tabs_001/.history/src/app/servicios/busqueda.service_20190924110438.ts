@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from "@angular/fire/firestore";
 import { InquilinoInterface } from '../models/inquilino.interface'
 import * as firebase from 'firebase';
-import { get } from 'https';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,6 @@ export class BusquedaService {
 
   private inquilinosCollection: AngularFirestoreCollection<InquilinoInterface>;
   private idInquilino : string;
-  public inquilinoLocal = {} as InquilinoInterface;
   
   constructor(private db: AngularFirestore) {
     this.inquilinosCollection = db.collection('sirv_c_inquilino');
@@ -50,7 +48,7 @@ export class BusquedaService {
   }
 
 
-  getBusquedaInquilinoId(idInquilino:string) {
+ async  getBusquedaInquilinoId(idInquilino:string) {
     try {
       console.log('Inicia consulta id=>'+ idInquilino);
       const snapshotResult =  this.db.collection('sirv_c_inquilino').doc(idInquilino);
@@ -61,15 +59,16 @@ export class BusquedaService {
 
   }
 
-  async getBusquedaInquilinoNombre(nombre:string,apellido:string) {
+  getBusquedaInquilinoNombre(nombre:string,apellido:string) {
     try {
       console.log('Nombre=>'+ nombre +' Apellido=>'+apellido);
-      var data: InquilinoInterface;
-      const snapshotResult = await this.db.collection('sirv_c_inquilino').ref.where('nombre', '==', nombre).where('apellido', '==', apellido).get();
+      const snapshotResult =  this.db.collection('sirv_c_inquilino', ref => ref.where('nombre', '==', nombre).where('apellido', '==', apellido));
+      console.log('Termina consulta por nombre=>'+ snapshotResult);
       return snapshotResult;
     } catch (error) {
       console.log('Error al devolver los datos' + error);
     }
+
   }
 
 
