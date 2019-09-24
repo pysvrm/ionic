@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title text-center>Iniciar Session</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <img class="icon" src="assets/icon/lt272.png" alt="">
+  <ion-item>
+    <ion-label position="floating">Email</ion-label>
+    <ion-input type="text" [(ngModel)]="email"  name="Correo electronico"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Password</ion-label>
+    <ion-input type="password" [(ngModel)]="password"  name="password"></ion-input>
+
+  </ion-item>
+  <br>
+  <ion-button (click) = "onSubmitLogin()" expand="block">Entrar</ion-button>
+ <!-- <h3>Email:{{email}}</h3>
+  <h3>Password:{{password}}</h3>-->
+</ion-content>
