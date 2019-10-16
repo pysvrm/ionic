@@ -54,7 +54,6 @@ export class RegistroPage implements OnInit, OnDestroy {
     var idInquilino: string;
     var registrosUsuario: number;
     this.inquilinoIdLocal = null;
-    
     try {
       await this.busquedaServ.getBusquedaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).then(resReg => {
         console.log('Entra a validar=>' + resReg);

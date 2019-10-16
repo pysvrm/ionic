@@ -27,25 +27,23 @@ export class VisitaService {
   getVisitaVisita(idInquilino: string) {
     try {
       console.log('Entra a consultar visita idInqquilino==>' + idInquilino);
-      const snapshotResult = this.db.collection('sirv_t_visita').ref.where('idUsuario', '==', idInquilino).get();
+      const snapshotResult = this.db.collection('sirv_t_visita', ref => ref.where('idUsuario', '==', idInquilino));
       return snapshotResult;
     } catch (error) {
       console.log('Error al devolver los datos' + error);
     }
   }
-
 
   getVisitaVisitaCheckIn(idInquilino: string) {
     try {
       console.log('Entra a consultar visita idInqquilino==>' + idInquilino);
-      const snapshotResult = this.db.collection('sirv_t_visita')
-        .ref.where('idUsuario', '==', idInquilino).orderBy('fechaRegistro','desc').limit(1).get();
+      const snapshotResult = this.db.collection('sirv_t_visita', ref => ref.where('idUsuario', '==', idInquilino).orderBy('fechaRegistro','desc').limit(1)).get();
       return snapshotResult;
     } catch (error) {
       console.log('Error al devolver los datos' + error);
     }
   }
-  
+
   getVisitaVisitaCheckOut(idInquilino: string) {
     try {
       console.log('Entra a consultar visita idInqquilino==>' + idInquilino);

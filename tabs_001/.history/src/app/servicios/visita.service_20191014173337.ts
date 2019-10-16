@@ -27,7 +27,7 @@ export class VisitaService {
   getVisitaVisita(idInquilino: string) {
     try {
       console.log('Entra a consultar visita idInqquilino==>' + idInquilino);
-      const snapshotResult = this.db.collection('sirv_t_visita').ref.where('idUsuario', '==', idInquilino).get();
+      const snapshotResult = this.db.collection('sirv_t_visita', ref => ref.where('idUsuario', '==', idInquilino));
       return snapshotResult;
     } catch (error) {
       console.log('Error al devolver los datos' + error);

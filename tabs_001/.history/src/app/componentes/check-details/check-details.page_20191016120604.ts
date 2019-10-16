@@ -50,21 +50,17 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
       message: 'Loading ...'
     });
     await loading.present();
-    this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
-      this.inquilinoLocal = resInquilino.data() as InquilinoInterface;
-      this.inquilinoLocal.id = resInquilino.id;
-    });
-
-    this.visitaDepto.getVisitaVisita(this.idInquilino).then(resVisitaVisita => {
-      resVisitaVisita.forEach(resVisitaVisita => {
-        this.visitaVisitaLocal = resVisitaVisita.data() as VisitaInterface;
-        this.visitaLocal.id = resVisitaVisita.id;
+    this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).snapshotChanges().forEach(inquilinoDetalleRes => {
+      loading.dismiss();
+      this.inquilinoLocal = inquilinoDetalleRes.payload.data() as InquilinoInterface;
+      this.visitaDepto.getVisitaVisita(this.idInquilino).snapshotChanges().pipe(takeUntil(this.unsubscribe)).subscribe(visitaDetalles => {
+        visitaDetalles.map(deptoDetalle => {
+          const data: VisitaInterface = deptoDetalle.payload.doc.data() as VisitaInterface;
+          this.inquilinoLocal.checkIn = data.checkIn;
+          this.inquilinoLocal.checkOut = data.checkOut;
+        });
       });
     });
-
-    this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
-    this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
-
   }
 
 
@@ -73,52 +69,72 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
     var ddMMyyyy = this.datePipe.transform(new Date(), "dd-MM-yyyy hh:mm:ss ");
     var registro: Number;
     console.log("==Inicio checkin==")
+    this.visitaDepto.getVisitaVisitaCheckIn(this.idInquilino).snapshotChanges().pipe(takeUntil(this.unsubscribe)).subscribe(visitaDetallesCheckIn => {
+      registro = visitaDetallesCheckIn.length;
+      visitaDetallesCheckIn.map(visitaDetallesCheckInRes => {
+        const dataVisita: VisitaInterface = visitaDetallesCheckInRes.payload.doc.data() as VisitaInterface;
+        if (registro > 0) {
+          console.log('Registro::' + registro);
 
-    this.visitaDepto.getVisitaVisitaCheckIn(this.idInquilino).then(resReg => {
-      console.log('registro' + registro);
-      resReg.forEach(resVisitUnit => {
-        const dataVisita: VisitaInterface = resVisitUnit.data() as VisitaInterface;
-        this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
-          this.inquilinoLocal = resInquilino.data() as InquilinoInterface;
-          this.inquilinoLocal.id = resInquilino.id;
-        });
-        this.visitaDepto.getVisitaVisita(this.idInquilino).then(resVisitaVisita => {
-          resVisitaVisita.forEach(resVisitaVisita => {
-            this.visitaVisitaLocal = resVisitaVisita.data() as VisitaInterface;
-            this.visitaLocal.id = resVisitaVisita.id;
-          });
-        });
-        if (dataVisita.checkIn == '0' && (dataVisita.checkOut == '0')) {
-          this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
-          this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
-          this.inquilinoLocal.idDepto = this.visitaVisitaLocal.idDepto;
-          this.visitaLocal.fechaRegistro = new Date();
-          this.visitaLocal.checkIn = ddMMyyyy.toString();
-          this.visitaLocal.checkOut = '0';
-          this.visitaLocal.status = "1";
-          this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
-          this.visitaLocal.idUsuario = this.idInquilino;
-          this.visitaDepto.updateVisita(this.visitaLocal.id, this.visitaLocal);
-          this.backCheck();
-        } else if (dataVisita.checkIn != '0' && (dataVisita.checkOut == '0')) {
-          console.log("==Ya existe una visita con un checkIn 1-0 ==");
-          this.checkInAlert();
-        } else if (dataVisita.checkIn != '0' && (dataVisita.checkOut != '0')) {
-          this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
-          this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
-          this.inquilinoLocal.idDepto = this.visitaVisitaLocal.idDepto;
-          this.visitaLocal.fechaRegistro = new Date();
-          this.visitaLocal.checkIn = ddMMyyyy.toString();
-          this.visitaLocal.checkOut = '0';
-          this.visitaLocal.status = "1";
-          this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
-          this.visitaLocal.idUsuario = this.idInquilino;
-          this.visitaDepto.addVisita(this.visitaLocal);
-          this.backCheck();
-          this.visitaDepto.addVisita( this.visitaLocal);
+
+          if (dataVisita.checkIn == '0' && (dataVisita.checkOut == '0')) {
+            console.log("== Registra el checkin 0-0 ==");
+            this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).snapshotChanges().pipe(takeUntil(this.unsubscribe)).forEach(inquilinoDetalleRes => {
+              this.inquilinoLocal = inquilinoDetalleRes.payload.data() as InquilinoInterface;
+              this.visitaDepto.getVisitaVisita(this.idInquilino).snapshotChanges().pipe(takeUntil(this.unsubscribe)).subscribe(visitaDetalles => {
+                visitaDetalles.map(deptoDetalle => {
+                  const data: VisitaInterface = deptoDetalle.payload.doc.data() as VisitaInterface;
+                  this.visitaLocal.id = deptoDetalle.payload.doc.id;
+                  console.log("data:::::01" + deptoDetalle.payload.doc.id);
+                  this.inquilinoLocal.checkIn = data.checkIn;
+                  this.inquilinoLocal.checkOut = data.checkOut;
+                  this.inquilinoLocal.idDepto = data.idDepto;
+                  this.visitaLocal.fechaRegistro = new Date();
+                  this.visitaLocal.checkIn = ddMMyyyy.toString();
+                  this.visitaLocal.checkOut = '0';
+                  this.visitaLocal.status = "1";
+                  this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
+                  this.visitaLocal.idUsuario = this.idInquilino;
+                  //this.visitaDepto.updateVisita(this.visitaLocal.id, this.visitaLocal);
+                  //this.backCheck();
+                });
+              });
+            });
+          } else if (dataVisita.checkIn != '0' && (dataVisita.checkOut == '0')) {
+            console.log("==Ya existe una visita con un checkIn 1-0 ==");
+            this.checkInAlert();
+          } else if (dataVisita.checkIn != '0' && (dataVisita.checkOut != '0')) {
+            console.log("==Se crea un nuevo registro de visita checkIn 1-1 ==");
+            this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).snapshotChanges().pipe(takeUntil(this.unsubscribe)).forEach(inquilinoDetalleRes => {
+              this.inquilinoLocal = inquilinoDetalleRes.payload.data() as InquilinoInterface;
+              this.visitaDepto.getVisitaVisita(this.idInquilino).snapshotChanges().pipe(takeUntil(this.unsubscribe)).subscribe(visitaDetalles => {
+                visitaDetalles.map(deptoDetalle => {
+                  const data: VisitaInterface = deptoDetalle.payload.doc.data() as VisitaInterface;
+                  this.visitaLocal.id = deptoDetalle.payload.doc.id;
+                  console.log("data:::::02" + deptoDetalle.payload.doc.id);
+                  this.inquilinoLocal.checkIn = data.checkIn;
+                  this.inquilinoLocal.checkOut = data.checkOut;
+                  this.inquilinoLocal.idDepto = data.idDepto;
+                  this.visitaLocal.fechaRegistro = new Date();
+                  this.visitaLocal.checkIn = ddMMyyyy.toString();
+                  this.visitaLocal.checkOut = '0';
+                  this.visitaLocal.status = "1";
+                  this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
+                  this.visitaLocal.idUsuario = this.idInquilino;
+                  //this.visitaDepto.addVisita(this.visitaLocal);
+                  //this.backCheck();
+                  //this.visitaDepto.addVisita( this.visitaLocal);
+                });
+              });
+            });
+          }
+        } else {
+          console.log("==Se crea un nuevo registro de visita checkIn 1-1 ==");
         }
       });
     });
+    //this.router.navigate(["/menu"]).then(() => window.location.reload());
+
   }
 
   async checkOutVisita() {
@@ -162,11 +178,25 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
           this.router.navigate(["/menu"]);
         } else if (dataVisita.checkIn != '0' && (dataVisita.checkOut != '0')) {
           console.log("==Manda Error porque se debe registrar un nuevo checkin con una nueva visita 1-1 ==");
-          this.checkOutAlert();
+          if (flagSalida == true) {
+            this.checkOutAlert();
+          }
         }
       });
     });
+
+    this.visitaDepto.getVisitaVisitaCheckIn(this.idInquilino).snapshotChanges()
+      .pipe(takeUntil(this.unsubscribe)).subscribe(visitaDetallesCheckOut => {
+        console.log('Inicia Busqueda Escucha' + visitaDetallesCheckOut.length);
+        visitaDetallesCheckOut.map(visitaDetallesCheckOutRes => {
+
+        });
+      });
+    //this.router.navigate(["/menu"]).then(() => window.location.reload());
   }
+
+
+
 
   async saveInquilino() {
     const loading = await this.loadingController.create({

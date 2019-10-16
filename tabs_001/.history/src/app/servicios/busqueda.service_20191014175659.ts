@@ -47,13 +47,12 @@ export class BusquedaService {
     }
 
   }
-  
-  
+
 
   getBusquedaInquilinoId(idInquilino:string) {
     try {
       console.log('Inicia consulta id=>'+ idInquilino);
-      const snapshotResult =  this.db.collection('sirv_c_inquilino').doc(idInquilino).ref.get();
+      const snapshotResult =  this.db.collection('sirv_c_inquilino').doc(idInquilino);
       return snapshotResult;
     } catch (error) {
       console.log('Error al devolver los datos' + error);
@@ -64,6 +63,7 @@ export class BusquedaService {
   async getBusquedaInquilinoNombre(nombre:string,apellido:string) {
     try {
       console.log('Nombre=>'+ nombre +' Apellido=>'+apellido);
+      var data: InquilinoInterface;
       const snapshotResult = await this.db.collection('sirv_c_inquilino').ref.where('nombre', '==', nombre).where('apellido', '==', apellido).get();
       return snapshotResult;
     } catch (error) {

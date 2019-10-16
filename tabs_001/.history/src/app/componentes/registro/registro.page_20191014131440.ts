@@ -54,7 +54,6 @@ export class RegistroPage implements OnInit, OnDestroy {
     var idInquilino: string;
     var registrosUsuario: number;
     this.inquilinoIdLocal = null;
-    
     try {
       await this.busquedaServ.getBusquedaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).then(resReg => {
         console.log('Entra a validar=>' + resReg);
@@ -95,7 +94,7 @@ export class RegistroPage implements OnInit, OnDestroy {
         }
         console.log("this.deptoLocal.id"+this.deptoLocal.id);
         this.idUsuario = await this.busquedaServ.addBusquedaInquilino(this.inquilinoLocal);
-        this.visitaLocal.idDepto = this.deptoLocal.id;
+        this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
         this.visitaLocal.idUsuario = this.idUsuario;
         this.inquilinos = [];
         this.visitaDepto.addVisita(this.visitaLocal);
