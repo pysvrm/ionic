@@ -98,7 +98,6 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
         if (dataVisita.checkIn == '0' && (dataVisita.checkOut == '0')) {
           this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
           this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
-          this.inquilinoLocal.visita ='1';
           this.inquilinoLocal.idDepto = this.visitaVisitaLocal.idDepto;
           this.visitaLocal.fechaRegistro = new Date();
           this.visitaLocal.checkIn = ddMMyyyy.toString();
@@ -114,7 +113,6 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
         } else if (dataVisita.checkIn != '0' && (dataVisita.checkOut != '0')) {
           this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
           this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
-          this.inquilinoLocal.visita ='1';
           this.inquilinoLocal.idDepto = this.visitaVisitaLocal.idDepto;
           this.visitaLocal.fechaRegistro = new Date();
           this.visitaLocal.checkIn = ddMMyyyy.toString();
@@ -123,8 +121,8 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
           this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
           this.visitaLocal.idUsuario = this.idInquilino;
           this.visitaDepto.addVisita(this.visitaLocal);
-          this.busquedaServ.updateBusquedaInqquilino(this.idInquilino, this.inquilinoLocal);
           this.backCheck();
+          this.visitaDepto.addVisita( this.visitaLocal);
         }
 
       });
@@ -140,18 +138,18 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
 
     this.visitaDepto.getVisitaVisitaCheckIn(this.idInquilino).then(resReg => {
       console.log('registro' + registro);
-      resReg.forEach(async resVisitUnit => {
+      resReg.forEach(resVisitUnit => {
         const dataVisita: VisitaInterface = resVisitUnit.data() as VisitaInterface;
         if (dataVisita.checkIn == '0' && (dataVisita.checkOut == '0')) {
           console.log("== No puede registrar checkout sin Checkin ==");
         } else if (dataVisita.checkIn != '0' && (dataVisita.checkOut == '0')) {
           console.log("==Registrar checkOut ==");
-          await this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
+          this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
             this.inquilinoLocal = resInquilino.data() as InquilinoInterface;
             this.inquilinoLocal.id = resInquilino.id;
           });
           console.log("==Registrar checkOut 02==");
-          await this.visitaDepto.getVisitaVisita(this.idInquilino).then(resVisitaVisita => {
+          this.visitaDepto.getVisitaVisita(this.idInquilino).then(resVisitaVisita => {
             resVisitaVisita.forEach(resVisitaVisita => {
               this.visitaVisitaLocal = resVisitaVisita.data() as VisitaInterface;
               this.visitaLocal.id = resVisitaVisita.id;
@@ -161,7 +159,6 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
           console.log("==Registrar checkOut 03==");
           this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
           this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
-          this.inquilinoLocal.visita ='0';
           this.inquilinoLocal.idDepto = this.visitaVisitaLocal.idDepto;
           this.inquilinoLocal.visita = '0';
           this.visitaLocal.checkIn = this.visitaVisitaLocal.checkIn;

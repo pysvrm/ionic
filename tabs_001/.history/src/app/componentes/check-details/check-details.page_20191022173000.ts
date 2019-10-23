@@ -98,7 +98,6 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
         if (dataVisita.checkIn == '0' && (dataVisita.checkOut == '0')) {
           this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
           this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
-          this.inquilinoLocal.visita ='1';
           this.inquilinoLocal.idDepto = this.visitaVisitaLocal.idDepto;
           this.visitaLocal.fechaRegistro = new Date();
           this.visitaLocal.checkIn = ddMMyyyy.toString();
@@ -114,7 +113,6 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
         } else if (dataVisita.checkIn != '0' && (dataVisita.checkOut != '0')) {
           this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
           this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
-          this.inquilinoLocal.visita ='1';
           this.inquilinoLocal.idDepto = this.visitaVisitaLocal.idDepto;
           this.visitaLocal.fechaRegistro = new Date();
           this.visitaLocal.checkIn = ddMMyyyy.toString();
@@ -123,7 +121,6 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
           this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
           this.visitaLocal.idUsuario = this.idInquilino;
           this.visitaDepto.addVisita(this.visitaLocal);
-          this.busquedaServ.updateBusquedaInqquilino(this.idInquilino, this.inquilinoLocal);
           this.backCheck();
         }
 
@@ -161,7 +158,6 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
           console.log("==Registrar checkOut 03==");
           this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
           this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
-          this.inquilinoLocal.visita ='0';
           this.inquilinoLocal.idDepto = this.visitaVisitaLocal.idDepto;
           this.inquilinoLocal.visita = '0';
           this.visitaLocal.checkIn = this.visitaVisitaLocal.checkIn;

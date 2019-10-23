@@ -88,10 +88,18 @@ export class BusquedaService {
   }
 
   async addBusquedaInquilino(inquilino: InquilinoInterface){
+    //var idInquilino = this.db.createId;
+    //inquilino.id = idInquilino.toString();
+    //this.inquilinosCollection.add(inquilino);
+    //var idInquilino = firebase.database().ref('sirv_c_inquilino').push(inquilino);
+    //console.log('Error al devolver los datos' + error);
     await this.inquilinosCollection.ref.add(inquilino).then(ref =>{
       console.log('Referencia id=>'+ ref.id);
       this.idInquilino = ref.id;
+      //return ref.id.toString();
     });
+    //return idInquilino.key;
+    //return firebase.database().ref('sirv_c_inquilino').push().key;
     return this.idInquilino;
     }
   

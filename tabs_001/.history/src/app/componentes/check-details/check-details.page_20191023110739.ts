@@ -123,7 +123,6 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
           this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
           this.visitaLocal.idUsuario = this.idInquilino;
           this.visitaDepto.addVisita(this.visitaLocal);
-          this.busquedaServ.updateBusquedaInqquilino(this.idInquilino, this.inquilinoLocal);
           this.backCheck();
         }
 
