@@ -54,15 +54,6 @@ export class CheckHistoricoPage implements OnInit {
     }
   }
 
-  onCancel(ev: any) {
-    try {
-      ev = ''
-      this.panelListaInquilinos = this.inquilinos;
-    } catch (error) {
-      console.log('Imprime Error' + error);
-    }
-  }
-
   backMenu() {
     this.router.navigate(["/menu"]);
   }
