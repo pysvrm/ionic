@@ -27,6 +27,17 @@ export class BusquedaService {
     }
   }
 
+
+  getBusquedaInquilinos() {
+    try {
+      console.log('Inicia consulta vista=>');
+      const snapshotResult = this.db.collection('sirv_c_inquilino', ref => ref
+      .where('tipo', '==', 'Inquilino').orderBy('nombre','asc'));
+      return snapshotResult;
+    } catch (error) {
+      console.log('Error al devolver los datos' + error);
+    }
+  }
   getBusquedaVisitaAll() {
     try {
       console.log('Inicia consulta vista=>');
@@ -47,12 +58,13 @@ export class BusquedaService {
     }
 
   }
+  
+  
 
-
-  getBusquedaInquilinoId(idInquilino:string) {
+  async getBusquedaInquilinoId(idInquilino:string) {
     try {
       console.log('Inicia consulta id=>'+ idInquilino);
-      const snapshotResult =  this.db.collection('sirv_c_inquilino').doc(idInquilino);
+      const snapshotResult =  this.db.collection('sirv_c_inquilino').doc(idInquilino).ref.get();
       return snapshotResult;
     } catch (error) {
       console.log('Error al devolver los datos' + error);
@@ -63,7 +75,6 @@ export class BusquedaService {
   async getBusquedaInquilinoNombre(nombre:string,apellido:string) {
     try {
       console.log('Nombre=>'+ nombre +' Apellido=>'+apellido);
-      var data: InquilinoInterface;
       const snapshotResult = await this.db.collection('sirv_c_inquilino').ref.where('nombre', '==', nombre).where('apellido', '==', apellido).get();
       return snapshotResult;
     } catch (error) {
@@ -84,22 +95,21 @@ export class BusquedaService {
 
 
   updateBusquedaInqquilino( id: string, inquilino: InquilinoInterface){
-    return this.inquilinosCollection.doc(id).update(inquilino);
+    try {
+      console.log('error update busqueda inquilino id'+id);
+      console.log('error update busqueda inquilino id'+inquilino.nombre);
+      return this.inquilinosCollection.doc(id).update(inquilino);
+    } catch (e) {
+    console.log('error update busqueda inquilino '+e);
+    }
+    
   }
 
   async addBusquedaInquilino(inquilino: InquilinoInterface){
-    //var idInquilino = this.db.createId;
-    //inquilino.id = idInquilino.toString();
-    //this.inquilinosCollection.add(inquilino);
-    //var idInquilino = firebase.database().ref('sirv_c_inquilino').push(inquilino);
-    //console.log('Error al devolver los datos' + error);
     await this.inquilinosCollection.ref.add(inquilino).then(ref =>{
       console.log('Referencia id=>'+ ref.id);
       this.idInquilino = ref.id;
-      //return ref.id.toString();
     });
-    //return idInquilino.key;
-    //return firebase.database().ref('sirv_c_inquilino').push().key;
     return this.idInquilino;
     }
   

@@ -26,7 +26,7 @@ export class DeptoService {
   }
 
 
-  async getBusquedaDeptoId(idInquilino:string) {
+  getBusquedaDeptoId(idInquilino:string) {
     try {
       console.log('Inicia consulta torre=>'+ idInquilino);
       const snapshotResult =  this.db.collection('sirv_c_deptos').doc(idInquilino).ref.get();

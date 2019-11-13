@@ -32,7 +32,7 @@ export class MenuInquilinosPage  implements OnDestroy, OnInit {
   }
 
   amonestaciones() {
-    this.router.navigate(["/check-amonestaciones"]);
+    this.router.navigate(["/check-amonestaciones",this.idInquilino]);
   }
 
   backMenu() {

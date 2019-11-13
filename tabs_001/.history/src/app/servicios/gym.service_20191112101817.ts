@@ -10,26 +10,28 @@ import { GymInterface } from "../models/gym.interface";
 })
 export class GymService {
 
-  private visitaCollection: AngularFirestoreCollection<GymInterface>;
+  private gymCollection: AngularFirestoreCollection<GymInterface>;
   constructor(private db: AngularFirestore) {
-    this.visitaCollection = db.collection('sirv_t_visita_gym');
+    this.gymCollection = db.collection('sirv_t_visita_gym');
   }
 
-  addVisita(visita: GymInterface) {
-    this.visitaCollection.add(visita);
+  addVisitaGym(gym: GymInterface) {
+    this.gymCollection.add(gym);
   }
 
 
-  updateVisita(id: string, visita: GymInterface) {
+  updateVisitaGym(id: string, gym: GymInterface) {
     console.log('Actualizar visita==>' + id);
-    return this.visitaCollection.doc(id).update(visita);
+    return this.gymCollection.doc(id).update(gym);
   }
 
-  async getVisitaVisita(idInquilino: string) {
+  async getVisitaVisitaGym(idInquilino: string) {
     try {
       console.log('Entra a consultar visita idInqquilino==>' + idInquilino);
-      const snapshotResult = this.db.collection('sirv_t_visita_gym').ref.where('idUsuario', '==', idInquilino)
-      .orderBy('fechaRegistro','asc').get();
+      const snapshotResult = this.db.collection('sirv_t_visita_gym').ref.where('idUsuario', '==', idInquilino).orderBy('fechaRegistro','asc').get();
+      if(snapshotResult == undefined){
+      console.log('null visitavisitaGym');
+      }
       return snapshotResult;
     } catch (error) {
       console.log('Error al devolver los datos' + error);
@@ -37,11 +39,12 @@ export class GymService {
   }
 
 
-  async getVisitaVisitaCheckIn(idInquilino: string) {
+  async getVisitaVisitaGymCheckIn(idInquilino: string) {
     try {
-      console.log('Entra a consultar visita idInqquilino==>' + idInquilino);
+      console.log('Entra a consultar visita idInqquilino==>01' + idInquilino);
       const snapshotResult = this.db.collection('sirv_t_visita_gym')
         .ref.where('idUsuario', '==', idInquilino).orderBy('fechaRegistro','desc').limit(1).get();
+        console.log('Entra a consultar visita idInqquilino fin'+snapshotResult);
       return snapshotResult;
     } catch (error) {
       console.log('Error al devolver los datos' + error);

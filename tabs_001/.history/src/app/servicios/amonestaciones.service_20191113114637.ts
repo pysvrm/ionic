@@ -26,16 +26,6 @@ export class AmonestacionesService {
     }
   }
 
-  getBusquedaAmonestacionesId(idAmonestacion:string) {
-    try {
-      console.log('Inicia consulta vista=>');
-      const snapshotResult = this.db.collection('sirv_t_amonestaciones').doc(idAmonestacion).ref.get();
-      return snapshotResult;
-    } catch (error) {
-      console.log('Error al devolver los datos' + error);
-    }
-  }
-
   addAmonestaciones(amonestaciones: AmonestacionesInterface){
     try {
       this.amonestacionesCollection.ref.add(amonestaciones);
@@ -45,9 +35,9 @@ export class AmonestacionesService {
     
   }
 
-  updateAmonestaciones( id: string, amonestaciones: AmonestacionesInterface){
+  updateAmonestaciones( id: string, inquilino: InquilinoInterface){
     try {
-      return this.amonestacionesCollection.doc(id).update(amonestaciones);
+      return this.amonestacionesCollection.doc(id).update(inquilino);
     } catch (e) {
     console.log('error update busqueda inquilino '+e);
     }

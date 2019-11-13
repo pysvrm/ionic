@@ -94,14 +94,29 @@ export class BusquedaService {
   }
 
 
-    updateBusquedaInqquilino( id: string, inquilino: InquilinoInterface){
-      try {
-        return this.inquilinosCollection.doc(id).update(inquilino);
-      } catch (e) {
-      console.log('error update busqueda inquilino '+e);
-      }
-      
+  updateBusquedaInqquilino( id: string, inquilino: InquilinoInterface){
+    try {
+      console.log('error update busqueda inquilino id'+id);
+      console.log('error update busqueda inquilino id'+inquilino.apellido);
+      console.log('error update busqueda inquilino id'+inquilino.nombre);
+      console.log('error update busqueda inquilino id'+inquilino.cambioDepto);
+      console.log('error update busqueda inquilino id'+inquilino.confianza);
+      console.log('error update busqueda inquilino id'+inquilino.depto);
+      console.log('error update busqueda inquilino id'+inquilino.email);
+      console.log('error update busqueda inquilino id'+inquilino.entra);
+      console.log('error update busqueda inquilino id'+inquilino.checkIn);
+      console.log('error update busqueda inquilino id'+inquilino.checkOut);
+      console.log('error update busqueda inquilino id'+inquilino.obcervaciones);
+      console.log('error update busqueda inquilino id'+inquilino.telefono);
+      console.log('error update busqueda inquilino id'+inquilino.tipo);
+      console.log('error update busqueda inquilino id'+inquilino.visita);
+
+      return this.inquilinosCollection.doc(id).update(inquilino);
+    } catch (e) {
+    console.log('error update busqueda inquilino '+e);
     }
+    
+  }
 
   async addBusquedaInquilino(inquilino: InquilinoInterface){
     await this.inquilinosCollection.ref.add(inquilino).then(ref =>{

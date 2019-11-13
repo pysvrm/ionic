@@ -28,8 +28,7 @@ export class GymService {
   async getVisitaVisita(idInquilino: string) {
     try {
       console.log('Entra a consultar visita idInqquilino==>' + idInquilino);
-      const snapshotResult = this.db.collection('sirv_t_visita_gym').ref.where('idUsuario', '==', idInquilino)
-      .orderBy('fechaRegistro','asc').get();
+      const snapshotResult = this.db.collection('sirv_t_visita_gym').ref.where('idUsuario', '==', idInquilino).orderBy('fechaRegistro','asc').get();
       return snapshotResult;
     } catch (error) {
       console.log('Error al devolver los datos' + error);

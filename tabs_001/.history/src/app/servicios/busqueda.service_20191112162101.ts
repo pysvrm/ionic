@@ -94,14 +94,14 @@ export class BusquedaService {
   }
 
 
-    updateBusquedaInqquilino( id: string, inquilino: InquilinoInterface){
-      try {
-        return this.inquilinosCollection.doc(id).update(inquilino);
-      } catch (e) {
-      console.log('error update busqueda inquilino '+e);
-      }
-      
+  updateBusquedaInqquilino( id: string, inquilino: InquilinoInterface){
+    try {
+      return this.inquilinosCollection.doc(id).update(inquilino);
+    } catch (e) {
+    console.log('error update busqueda inquilino '+e);
     }
+    
+  }
 
   async addBusquedaInquilino(inquilino: InquilinoInterface){
     await this.inquilinosCollection.ref.add(inquilino).then(ref =>{

@@ -54,6 +54,8 @@ export class RegistroPage implements OnInit, OnDestroy {
     var idInquilino: string;
     var registrosUsuario: number;
     this.inquilinoIdLocal = null;
+
+    
     try {
       await this.busquedaServ.getBusquedaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).then(resReg => {
         console.log('Entra a validar=>' + resReg);
@@ -65,13 +67,12 @@ export class RegistroPage implements OnInit, OnDestroy {
         });
       });
 
-
-
       if (registrosUsuario > 0) {
         this.presentAlert();
       } else {
         console.log("Generar Registro");
-        await this.deptoServ.getBusquedaDeptoAsync(this.inquilinoLocal.torre, this.inquilinoLocal.depto).then(resDept => {
+        await this.deptoServ.getBusquedaDeptoAsync(this.inquilinoLocal.torre, this.inquilinoLocal.depto)
+        .then(resDept => {
           console.log('Entra a validar=>' + resDept);
           registrosUsuario = resDept.docs.length;
           resDept.forEach(resDeptUnit => {
@@ -92,21 +93,30 @@ export class RegistroPage implements OnInit, OnDestroy {
           this.visitaLocal.status = "0";
           this.inquilinoLocal.visita = "0";
         }
-
+    
+        console.log("this.deptoLocal.id"+this.deptoLocal.id);
         this.idUsuario = await this.busquedaServ.addBusquedaInquilino(this.inquilinoLocal);
-        this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
+        this.visitaLocal.idDepto = this.deptoLocal.id;
         this.visitaLocal.idUsuario = this.idUsuario;
         this.inquilinos = [];
         this.visitaDepto.addVisita(this.visitaLocal);
+
+        if(this.inquilinoLocal.tipo =="Inquilino"){
+          this.deptoLocal.torre= this.inquilinoLocal.torre;
+          this.deptoLocal.depto = this.inquilinoLocal.depto;
+          this.deptoLocal.idPropietario = this.idUsuario;
+          this.deptoServ.updateDepartamento(this.deptoLocal);
+        }
+
         this.router.navigate(["/menu"]);
         }
+
+      
       console.log("inquilino local 03::" + this.deptoLocal.id);
     } catch (error) {
       console.log('Error' + error);
     }
-
-
-  }
+}
 
 
   async presentAlert() {

@@ -71,7 +71,8 @@ export class RegistroPage implements OnInit, OnDestroy {
         this.presentAlert();
       } else {
         console.log("Generar Registro");
-        await this.deptoServ.getBusquedaDeptoAsync(this.inquilinoLocal.torre, this.inquilinoLocal.depto).then(resDept => {
+        await this.deptoServ.getBusquedaDeptoAsync(this.inquilinoLocal.torre, this.inquilinoLocal.depto)
+        .then(resDept => {
           console.log('Entra a validar=>' + resDept);
           registrosUsuario = resDept.docs.length;
           resDept.forEach(resDeptUnit => {

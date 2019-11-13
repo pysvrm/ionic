@@ -56,18 +56,15 @@ export class GymPage implements OnDestroy, OnInit {
     });
     await loading.present();
     console.log("==this.idInquilino=="+this.idInquilino)
+
     await this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
       this.inquilinoLocal = resInquilino.data() as InquilinoInterface;      
       this.inquilinoLocal.id = resInquilino.id;
     });
+    console.log("==this.idInquilino=="+this.inquilinoLocal.nombre);
 
-    await this.visitaDepto.getVisitaVisita(this.idInquilino).then(regVisitaVisita => {
-      regVisitaVisita.forEach(resVisitaVisita => {
-        this.visitaVisitaLocal = resVisitaVisita.data() as VisitaInterface;
-        this.visitaVisitaLocal.id = resVisitaVisita.id;
-      });
-    });
     
+
     console.log("==this.idInquilino=="+this.inquilinoLocal.nombre);
     console.log("==this.visitaLocal.id=="+this.visitaVisitaLocal.id);
     this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
@@ -115,8 +112,6 @@ export class GymPage implements OnDestroy, OnInit {
               this.deptoLocal = regDepto.data() as deptoInterface;
               console.log('regDepto.data()'+regDepto.data());
               this.visitaVisitaLocal.idDepto = regDepto.id; 
-              this.visitaVisitaLocal.checkIn = '0';
-              this.visitaVisitaLocal.checkOut = '0';  
             });
           }
           
@@ -156,7 +151,7 @@ export class GymPage implements OnDestroy, OnInit {
           this.visitaLocal.idUsuario = this.idInquilino;
           console.log("==Ya existe una visita con un checkIn 11 ==");
           this.visitaDepto.addVisita(this.visitaLocal);
-          console.log("==Ya existe una visita con un checkIn 12 =="+this.inquilinoLocal.id);
+          console.log("==Ya existe una visita con un checkIn 12 ==");
           this.busquedaServ.updateBusquedaInqquilino(this.inquilinoLocal.id, this.inquilinoLocal);
           console.log("==Ya existe una visita con un checkIn 13 ==");
           this.backCheck();

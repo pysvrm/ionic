@@ -9,7 +9,6 @@ import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { map, takeUntil } from "rxjs/operators";
 import { ServiciosInterface } from 'src/app/models/servicios.interface';
 import { AmonestacionesInterface } from 'src/app/models/amonestacion.interface';
-import { AmonestacionesService } from 'src/app/servicios/amonestaciones.service';
 
 
 
@@ -21,7 +20,6 @@ import { AmonestacionesService } from 'src/app/servicios/amonestaciones.service'
 export class AmonestacionesPage implements OnDestroy, OnInit {
  
   public amonestacionesLocal = {} as AmonestacionesInterface;
-  public amonestacionesConsulta = {} as AmonestacionesInterface;
   public idInquilino = null;
   public inquilinos : any =[];
   public panelListaInquilinos : any =[];
@@ -29,7 +27,7 @@ export class AmonestacionesPage implements OnDestroy, OnInit {
   private unsubscribe: Subject<void> = new Subject();
 
   constructor(public authServices: AuthService, public router: Router,public route: ActivatedRoute, 
-    public busquedaServ: BusquedaService, public amonestacionesService: AmonestacionesService) { }
+    public busquedaServ: BusquedaService) { }
 
 
     ngOnInit() {
@@ -40,18 +38,8 @@ export class AmonestacionesPage implements OnDestroy, OnInit {
     this.router.navigate(["/menu"]);
   }
 
-  registraVisitaInquilino() {
-    this.amonestacionesService.addAmonestaciones(this.amonestacionesLocal);
-  }
+  async registraVisitaInquilino() {}
 
-  actualizarVisitaInquilino() {
-    this.amonestacionesService.getBusquedaAmonestacionesId(this.amonestacionesLocal.id).then(regAmon =>{
-      this.amonestacionesConsulta = regAmon.data() as AmonestacionesInterface;
-      this.amonestacionesLocal.id = regAmon.id;
-    });
-    this.amonestacionesService.updateAmonestaciones(this.amonestacionesLocal.id, this.amonestacionesLocal);
-  }
-  
   ngOnDestroy() {
     console.log('ngOnDestory');
     this.unsubscribe.next();

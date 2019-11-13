@@ -56,18 +56,15 @@ export class GymPage implements OnDestroy, OnInit {
     });
     await loading.present();
     console.log("==this.idInquilino=="+this.idInquilino)
+
     await this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
       this.inquilinoLocal = resInquilino.data() as InquilinoInterface;      
       this.inquilinoLocal.id = resInquilino.id;
     });
+    console.log("==this.idInquilino=="+this.inquilinoLocal.nombre);
 
-    await this.visitaDepto.getVisitaVisita(this.idInquilino).then(regVisitaVisita => {
-      regVisitaVisita.forEach(resVisitaVisita => {
-        this.visitaVisitaLocal = resVisitaVisita.data() as VisitaInterface;
-        this.visitaVisitaLocal.id = resVisitaVisita.id;
-      });
-    });
     
+
     console.log("==this.idInquilino=="+this.inquilinoLocal.nombre);
     console.log("==this.visitaLocal.id=="+this.visitaVisitaLocal.id);
     this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
