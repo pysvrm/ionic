@@ -1,0 +1,30 @@
+.icon{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%; 
+}
+
+.iconButton{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ion-grid{
+    border-style: solid;
+    border-color: chartreuse;
+    .ion-row{
+        border: solid;
+        padding-top: 10;
+        padding-bottom: 01;
+        margin-top: 01;
+        margin-bottom: 01;
+        border-bottom: medium gray(34);
+        border-color: coral;
+    }
+    .ion-col{
+      border: solid;
+      border-color:darkmagenta;
+    }
+  }

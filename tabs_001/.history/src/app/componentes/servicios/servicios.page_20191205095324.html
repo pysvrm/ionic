@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title text-center>Servicios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="background:#151965">
+    <div align="center">
+        <img class="icon" src="assets/icon/lt272.gif" alt="">
+      </div>
+      
+      <div align="center" style="background:#151965;">
+        <ion-button fill="solid"  expand="full" style="--background:#151965;" (click)="register()">
+          AGUA<ion-icon name="reorder"></ion-icon>
+        </ion-button>
+      </div>
+      
+      <div align="center" style="background:#32407b;">
+        <ion-button fill="solid" expand="full" style="--background:#32407b" (click)="check()">
+          LUZ<ion-icon name="construct"></ion-icon>
+        </ion-button>
+      </div>
+      
+      <div align="center" style="background:#515585;">
+        <ion-button fill="solid" expand="full" style="--background:#515585"  (click)="checkHistorico()">
+          GAS<ion-icon name="folder-open"></ion-icon>
+        </ion-button>
+      </div>
+      
+      <div align="center" style="background:#4d80e4;">
+        <ion-textarea [(ngModel)]='checkServicios.obcervaciones' placeholder="Información adicional..."></ion-textarea>
+        <ion-button fill="solid" expand="full" style="--background:#4d80e4" (click)="amonestaciones()">
+          OTRO<ion-icon name="hand"></ion-icon>
+        </ion-button>
+      </div>
+      
+      <div  style="background:#46b5d1;border:0;"  (click) = "backMenu()">
+        <ion-button fill="solid" expand="full" style="--background:#46b5d1">
+          REGRESAR<ion-icon name="share-alt">
+          </ion-icon>
+        </ion-button>
+      </div>
+</ion-content>

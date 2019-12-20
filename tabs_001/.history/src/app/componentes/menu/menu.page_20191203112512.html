@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title text-center>Lerdo de Tejada 272</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <img class="icon" src="assets/icon/lt272.gif" alt="">
+  <br>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div align="center"><button (click)="check()" icon-only>
+            <ion-icon name="reorder"></ion-icon>REGISTRO
+          </button></div>
+      </ion-col>
+      <ion-col>
+        <div align="center"> <button ion-button icon-only>
+            <ion-icon name="construct"></ion-icon>SERVICIOS
+          </button> </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div align="center"> <button ion-button icon-only>
+            <ion-icon name="folder-open"></ion-icon>
+          </button></div>
+      </ion-col>
+      <ion-col>
+        <div align="center"> <button ion-button icon-only>
+            <ion-icon name="hand"></ion-icon>
+          </button></div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div align="center"> <button ion-button icon-only>
+            <ion-icon name="share-alt"></ion-icon>
+          </button></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+<!--
+  <ion-button class="iconButton" (click)="register()" expand="block" class="iconButton" ng-click="register()">Registro
+  </ion-button>
+  <br>
+  <ion-button (click)="check()" expand="block">Inquilinos Servicios</ion-button>
+  <br>
+  <ion-button (click)="checkHistorico()" expand="block">Check Historico</ion-button>
+  <br>
+  <ion-button (click)="amonestaciones()" expand="block">Amonestaciones</ion-button>
+  <br>
+  <ion-button (click)="OnLogout()" expand="block">logout</ion-button>-->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/registro" routerDirection="forward">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

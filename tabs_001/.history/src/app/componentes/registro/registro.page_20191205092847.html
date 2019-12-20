@@ -1,0 +1,136 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title text-center>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <img class="icon" src="assets/icon/registro.gif" alt="">
+
+  <ion-content padding>
+
+    <ion-item>
+      <ion-label position="floating">Nombre(s) <ion-text color="danger">*</ion-text>
+      </ion-label>
+      <ion-input required type="text" [(ngModel)]='inquilinoLocal.nombre'>
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Apellidos <ion-text color="danger">*</ion-text>
+      </ion-label>
+      <ion-input required type="text" [(ngModel)]='inquilinoLocal.apellido'>
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Correo Electronico <ion-text color="danger">*</ion-text>
+      </ion-label>
+      <ion-input required type="text" [(ngModel)]='inquilinoLocal.email'>
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Teléfono celular<ion-text color="danger">*</ion-text>
+      </ion-label>
+      <ion-input required type="text" [(ngModel)]='inquilinoLocal.telefono'>
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Torre</ion-label>
+      <ion-select ok-text="Si" cancel-text="No" [(ngModel)]='inquilinoLocal.torre'>
+        <ion-select-option value="1">Torre 1</ion-select-option>
+        <ion-select-option value="2">Torre 2</ion-select-option>
+        <ion-select-option value="3">Torre 3</ion-select-option>
+        <ion-select-option value="4">Torre 4</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Departamento</ion-label>
+      <ion-select ok-text="Si" cancel-text="No" [(ngModel)]='inquilinoLocal.depto'>
+        <ion-select-option value="101">101</ion-select-option>
+        <ion-select-option value="102">102</ion-select-option>
+        <ion-select-option value="103">103</ion-select-option>
+        <ion-select-option value="104">104</ion-select-option>
+        <ion-select-option value="105">105</ion-select-option>
+        <ion-select-option value="106">106</ion-select-option>
+        <ion-select-option value="201">201</ion-select-option>
+        <ion-select-option value="202">202</ion-select-option>
+        <ion-select-option value="203">203</ion-select-option>
+        <ion-select-option value="204">204</ion-select-option>
+        <ion-select-option value="205">205</ion-select-option>
+        <ion-select-option value="206">206</ion-select-option>
+        <ion-select-option value="301">301</ion-select-option>
+        <ion-select-option value="302">302</ion-select-option>
+        <ion-select-option value="303">303</ion-select-option>
+        <ion-select-option value="304">304</ion-select-option>
+        <ion-select-option value="305">305</ion-select-option>
+        <ion-select-option value="306">306</ion-select-option>
+        <ion-select-option value="401">401</ion-select-option>
+        <ion-select-option value="402">402</ion-select-option>
+        <ion-select-option value="403">403</ion-select-option>
+        <ion-select-option value="404">404</ion-select-option>
+        <ion-select-option value="405">405</ion-select-option>
+        <ion-select-option value="406">406</ion-select-option>
+        <ion-select-option value="501">501</ion-select-option>
+        <ion-select-option value="502">502</ion-select-option>
+        <ion-select-option value="503">503</ion-select-option>
+        <ion-select-option value="504">504</ion-select-option>
+        <ion-select-option value="505">505</ion-select-option>
+        <ion-select-option value="506">506</ion-select-option>
+        <ion-select-option value="601">601</ion-select-option>
+        <ion-select-option value="602">602</ion-select-option>
+        <ion-select-option value="603">603</ion-select-option>
+        <ion-select-option value="604">604</ion-select-option>
+        <ion-select-option value="605">605</ion-select-option>
+        <ion-select-option value="606">606</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <br>
+    <ion-list>
+
+      <ion-item>
+        <ion-label>Tipo de registro</ion-label>
+        <ion-select ok-text="Si" cancel-text="No" [(ngModel)]="inquilinoLocal.tipo">
+          <ion-select-option value="Inquilino">Inquilino</ion-select-option>
+          <ion-select-option value="Visita">Visita</ion-select-option>
+          <ion-select-option value="Renta">Renta</ion-select-option>
+          <ion-select-option value="Servicio">Servicio</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label>Visita de confianza</ion-label>
+        <ion-select ok-text="Si" cancel-text="No" [(ngModel)]="inquilinoLocal.confianza">
+          <ion-select-option value="1">Si</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Ingresa</ion-label>
+        <ion-select ok-text="Si" cancel-text="No" [(ngModel)]="inquilinoLocal.entra">
+          <ion-select-option value="1">Si</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+    </ion-list>
+    <ion-item>
+      <ion-textarea [(ngModel)]='inquilinoLocal.obcervaciones' placeholder="Información adicional..."></ion-textarea>
+    </ion-item>
+  </ion-content>
+  <div class="ion-padding">
+    <ion-button expand="block" type="submit" (click)="registraVisitaInquilino()" class="ion-no-margin">Crear Registro
+    </ion-button>
+  </div>
+  <div  style="background:#46b5d1;border:0;"  (click)="backMenu()">
+    <ion-button fill="solid" expand="full" style="--background:#46b5d1">
+      REGRESAR<ion-icon name="share-alt">
+      </ion-icon>
+    </ion-button>
+  </div>
+</ion-content>

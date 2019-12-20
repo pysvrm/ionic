@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title text-center>Servicios Inquilinos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <img class="icon" src="assets/icon/family2.gif" alt="">
+  <br>
+  <ion-button  (click) = "servicios()"  expand="block">Servicios </ion-button>
+  <br>
+  <ion-button (click) = "gym()"  expand="block">Gym</ion-button>
+  <br>
+  <ion-button (click) = "amonestaciones()"  expand="block">Amonestaciones</ion-button>
+  <br>
+  <ion-button (click) = "backMenu()"  expand="block">Regresar</ion-button>
+  <br>
+
+
+  <ion-content style="background:#151965">
+      <div align="center">
+          <img class="icon" src="assets/icon/family2.gif" alt="">
+        </div><div align="center" style="background:#151965;">
+          <ion-button fill="solid"  expand="full" style="--background:#151965;"  (click) = "servicios()"">
+            SERVICIOS<ion-icon name="reorder"></ion-icon>
+          </ion-button>
+        </div><div align="center" style="background:#32407b;">
+          <ion-button fill="solid" expand="full" style="--background:#32407b" (click) = "gym()" )">
+            GYM<ion-icon name="construct"></ion-icon>
+          </ion-button>
+        </div><div align="center" style="background:#515585;">
+          <ion-button fill="solid" expand="full" style="--background:#515585" (click) = "amonestaciones()">
+            AMONESTACIONES<ion-icon name="folder-open"></ion-icon>
+          </ion-button>
+        </div><div  style="background:#46b5d1;border:0;"  (click) = "backMenu()">
+          <ion-button fill="solid" expand="full" style="--background:#46b5d1">
+            REGRESAR<ion-icon name="share-alt">
+            </ion-icon>
+          </ion-button>
+        </div>
+  </ion-content>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/registro" routerDirection="forward">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+  </ion-fab>
+</ion-content>
