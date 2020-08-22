@@ -89,18 +89,30 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
         this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
           this.inquilinoLocal = resInquilino.data() as InquilinoInterface;
           this.inquilinoLocal.id = resInquilino.id;
+          console.log('RegistroBusquedaInquilino::'+ this.inquilinoLocal.email);
         });
-        console.log('RegistroBusquedaInquilino::'+ this.inquilinoLocal.email);
-        console.log('IdDepartamento::'+ this.inquilinoLocal.idDepto);
+        
+        this.visitaDepto.getVisitaVisita(this.inquilinoLocal.id).then(regVisitaVisita => {
+          regVisitaVisita.forEach(resVisitaVisita => {
+            this.visitaVisitaLocal = resVisitaVisita.data() as VisitaInterface;
+            this.visitaVisitaLocal.id = resVisitaVisita.id;
+          });
+        });
+
+        this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
+        this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
+        
+         this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
+          this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
           this.inquilinoLocal.visita ='1';
-          this.inquilinoLocal.idDepto = this.inquilinoLocal.idDepto;
+          this.inquilinoLocal.idDepto = this.visitaVisitaLocal.idDepto;
           this.visitaLocal.fechaRegistro = new Date();
           this.visitaLocal.checkIn = ddMMyyyy.toString();
           this.visitaLocal.checkOut = '0';
           this.visitaLocal.status = "1";
           this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
           this.visitaLocal.idUsuario = this.idInquilino;
-          this.visitaDepto.addVisita(this.visitaLocal);
+          this.visitaDepto.updateVisita(this.visitaLocal.id, this.visitaLocal);
           this.backCheck();
       }else{
         console.log('Con registro en la Bd');

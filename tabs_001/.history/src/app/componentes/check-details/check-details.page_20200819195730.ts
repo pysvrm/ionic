@@ -91,9 +91,20 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
           this.inquilinoLocal.id = resInquilino.id;
         });
         console.log('RegistroBusquedaInquilino::'+ this.inquilinoLocal.email);
-        console.log('IdDepartamento::'+ this.inquilinoLocal.idDepto);
+        this.visitaDepto.getVisitaVisita(this.inquilinoLocal.id).then(regVisitaVisita => {
+          regVisitaVisita.forEach(resVisitaVisita => {
+            this.visitaVisitaLocal = resVisitaVisita.data() as VisitaInterface;
+            this.visitaVisitaLocal.id = resVisitaVisita.id;
+          });
+        });
+
+        this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
+        this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
+        
+         this.inquilinoLocal.checkIn = this.visitaVisitaLocal.checkIn;
+          this.inquilinoLocal.checkOut = this.visitaVisitaLocal.checkOut;
           this.inquilinoLocal.visita ='1';
-          this.inquilinoLocal.idDepto = this.inquilinoLocal.idDepto;
+          this.inquilinoLocal.idDepto = this.visitaVisitaLocal.idDepto;
           this.visitaLocal.fechaRegistro = new Date();
           this.visitaLocal.checkIn = ddMMyyyy.toString();
           this.visitaLocal.checkOut = '0';

@@ -83,25 +83,15 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
     var registro: Number;
     
     await this.visitaDepto.getVisitaVisitaCheckIn(this.idInquilino).then(resReg => { 
-      
       if((resReg).empty){
         console.log('Sin registro en la Bd'); 
-        this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
-          this.inquilinoLocal = resInquilino.data() as InquilinoInterface;
-          this.inquilinoLocal.id = resInquilino.id;
-        });
-        console.log('RegistroBusquedaInquilino::'+ this.inquilinoLocal.email);
-        console.log('IdDepartamento::'+ this.inquilinoLocal.idDepto);
-          this.inquilinoLocal.visita ='1';
-          this.inquilinoLocal.idDepto = this.inquilinoLocal.idDepto;
-          this.visitaLocal.fechaRegistro = new Date();
-          this.visitaLocal.checkIn = ddMMyyyy.toString();
-          this.visitaLocal.checkOut = '0';
-          this.visitaLocal.status = "1";
-          this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
-          this.visitaLocal.idUsuario = this.idInquilino;
-          this.visitaDepto.addVisita(this.visitaLocal);
-          this.backCheck();
+        this.visitaDepto.getVisitaVisita(this.inquilinoLocal.id).then(regVisitaVisita => {
+          regVisitaVisita.forEach(resVisitaVisita => {
+            this.visitaVisitaLocal = resVisitaVisita.data() as VisitaInterface;
+            this.visitaVisitaLocal.id = resVisitaVisita.id;
+            console.log('visitaVisitaLocal::')
+          });
+        });   
       }else{
         console.log('Con registro en la Bd');
         resReg.forEach(async resVisitUnit => {
@@ -158,6 +148,7 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
         });
       }
     });
+    console.log("::Inserta visita::");
   }
 
   async checkOutVisita() {
