@@ -9,6 +9,7 @@ import { deptoInterface } from '../models/depto.interface'
 export class DeptoService {
 
   private deptosCollection: AngularFirestoreCollection<deptoInterface>;
+  public deptoLocal = {} as deptoInterface;
   constructor(private db: AngularFirestore) {
     this.deptosCollection = db.collection('sirv_c_deptos');
    }
@@ -51,8 +52,13 @@ export class DeptoService {
   }
 
   async addDepartamento(depto: deptoInterface){
-    this.deptosCollection.add(depto);
-  }
+
+    await this.deptosCollection.add(depto).then(ref =>{
+      console.log('Referencia id=>'+ ref.id);
+      this.deptoLocal.id = ref.id;
+    });
+    return this.deptoLocal.id;
+    }
 
   async updateDepartamento(depto: deptoInterface){
     this.deptosCollection.doc(depto.id).update(depto);

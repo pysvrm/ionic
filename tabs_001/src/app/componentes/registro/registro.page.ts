@@ -40,7 +40,7 @@ export class RegistroPage implements OnInit, OnDestroy {
   public fotoTomadaPerfil: any;
   public fotoIdentifica: any;
   public fotoTomadaIdentifica: any;
-  public varItemGroup:String;
+  public varItemGroup: String;
 
   constructor(public authServices: AuthService,
     public router: Router,
@@ -67,7 +67,6 @@ export class RegistroPage implements OnInit, OnDestroy {
     var registrosUsuario: number;
     this.inquilinoIdLocal = null;
 
-
     try {
       await this.busquedaServ.getBusquedaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).then(resReg => {
         console.log('Entra a validar=>' + resReg);
@@ -84,14 +83,27 @@ export class RegistroPage implements OnInit, OnDestroy {
       } else {
         console.log("Generar Registro");
         await this.deptoServ.getBusquedaDeptoAsync(this.inquilinoLocal.torre, this.inquilinoLocal.depto)
-          .then(resDept => {
-            console.log('Entra a validar=>' + resDept);
-            registrosUsuario = resDept.docs.length;
-            resDept.forEach(resDeptUnit => {
-              this.deptoLocal = resDeptUnit.data() as deptoInterface;
-              console.log('resDeptUnit.data()' + resDeptUnit.id);
-              this.deptoLocal.id = resDeptUnit.id;
-            });
+          .then(async resDept => {
+            if ((resDept).empty) {
+              console.log("No existe registro de depto-Se genera en automatico");
+              if (this.inquilinoLocal.tipo == "Inquilino") {
+                this.deptoLocal.torre = this.inquilinoLocal.torre;
+                this.deptoLocal.depto = this.inquilinoLocal.depto;
+                this.deptoLocal.idPropietario = this.idUsuario;
+                this.deptoLocal.id =  await this.deptoServ.addDepartamento(this.deptoLocal);
+              }else{
+                this.presentAlert('Error registro Depto', 'No existe un inquilino registrado en el departamento.');
+              }
+            } else {
+              console.log("Ya existe registro de depto");
+              console.log('Entra a validar=>' + resDept);
+              registrosUsuario = resDept.docs.length;
+              resDept.forEach(resDeptUnit => {
+                this.deptoLocal = resDeptUnit.data() as deptoInterface;
+                console.log('resDeptUnit.data()' + resDeptUnit.id);
+                this.deptoLocal.id = resDeptUnit.id;
+              });
+            }
           });
 
         if (this.inquilinoLocal.entra == "1") {
@@ -114,16 +126,10 @@ export class RegistroPage implements OnInit, OnDestroy {
         this.visitaLocal.idUsuario = this.idUsuario;
         this.inquilinos = [];
         this.visitaDepto.addVisita(this.visitaLocal);
-
-        if (this.inquilinoLocal.tipo == "Inquilino") {
-          this.deptoLocal.torre = this.inquilinoLocal.torre;
-          this.deptoLocal.depto = this.inquilinoLocal.depto;
-          this.deptoLocal.idPropietario = this.idUsuario;
-          this.deptoServ.updateDepartamento(this.deptoLocal);
-        }
-
         this.router.navigate(["/menu"]);
       }
+
+      
       console.log("inquilino local 03::" + this.deptoLocal.id);
     } catch (error) {
       console.log('Error' + error);
@@ -138,8 +144,8 @@ export class RegistroPage implements OnInit, OnDestroy {
       mediaType: this.camera.MediaType.PICTURE,
       cameraDirection: this.camera.Direction.FRONT,
       correctOrientation: true,
-      targetHeight: 3000,
-      targetWidth: 3000,
+      targetHeight: 1000,
+      targetWidth: 1000,
     }
     this.camera.getPicture(options).then((imageData) => {
       this.fotoPefil = this.dataURItoBlob('data:image/jpeg;base64,' + imageData);
@@ -157,8 +163,8 @@ export class RegistroPage implements OnInit, OnDestroy {
       mediaType: this.camera.MediaType.PICTURE,
       cameraDirection: this.camera.Direction.FRONT,
       correctOrientation: true,
-      targetHeight: 3000,
-      targetWidth: 3000,
+      targetHeight: 1000,
+      targetWidth: 1000,
     }
     this.camera.getPicture(options).then((imageData) => {
       this.fotoIdentifica = this.dataURItoBlob('data:image/jpeg;base64,' + imageData);
@@ -181,7 +187,7 @@ export class RegistroPage implements OnInit, OnDestroy {
   public uploadFotografiaPerfil() {
     if (this.fotoPefil) {
       var uploadTask = this.storage.storage.ref().child('imagesPerfil/'
-        + (this.inquilinoLocal.nombre+" "+ this.inquilinoLocal.apellido+'.jpeg'))
+        + (this.inquilinoLocal.nombre + " " + this.inquilinoLocal.apellido + '.jpeg'))
         .put(this.fotoPefil);
     }
 
@@ -190,28 +196,28 @@ export class RegistroPage implements OnInit, OnDestroy {
   public uploadFotografiaIdentifica() {
     if (this.fotoIdentifica) {
       var uploadTask = this.storage.storage.ref().child('imagesIdentifacion/'
-        + (this.inquilinoLocal.nombre+" "+ this.inquilinoLocal.apellido+'.jpeg'))
+        + (this.inquilinoLocal.nombre + " " + this.inquilinoLocal.apellido + '.jpeg'))
         .put(this.fotoIdentifica);
     }
   }
 
-  getPicture(){
+  getPicture() {
     let options: CameraOptions = {
+      quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       cameraDirection: this.camera.Direction.FRONT,
-      targetWidth: 3000,
-      targetHeight: 3000,
-      quality: 100
+      targetWidth: 1000,
+      targetHeight: 1000
     }
-    this.camera.getPicture( options )
-    .then(imageData => {
-      this.fotoTomadaPerfil = 'imagesIdentifacion/'+ (this.inquilinoLocal.nombre + this.inquilinoLocal.apellido).trim();
-    })
-    .catch(error =>{
-      console.error( error );
-    });
+    this.camera.getPicture(options)
+      .then(imageData => {
+        this.fotoTomadaPerfil = 'imagesIdentifacion/' + (this.inquilinoLocal.nombre + this.inquilinoLocal.apellido).trim();
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   public async presentAlert(subHeader: string, message: string) {

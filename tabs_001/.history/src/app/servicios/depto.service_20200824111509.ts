@@ -9,6 +9,7 @@ import { deptoInterface } from '../models/depto.interface'
 export class DeptoService {
 
   private deptosCollection: AngularFirestoreCollection<deptoInterface>;
+  public deptoLocal = {} as deptoInterface;
   constructor(private db: AngularFirestore) {
     this.deptosCollection = db.collection('sirv_c_deptos');
    }
@@ -17,6 +18,19 @@ export class DeptoService {
     try {
       console.log('Inicia consulta torre=>'+ torre + ':::depto'+depto);
       const snapshotResult =  this.db.collection('sirv_c_deptos', ref => ref.where('torre', '==', torre).where('depto', '==',depto));
+      console.log('Obtiene departamento=>'+ snapshotResult);
+      return snapshotResult;
+    } catch (error) {
+      console.log('Error al devolver los datos' + error);
+    }
+
+  }
+
+
+  async getBusquedaDeptoId(idInquilino:string) {
+    try {
+      console.log('Inicia consulta torre=>'+ idInquilino);
+      const snapshotResult =  this.db.collection('sirv_c_deptos').doc(idInquilino).ref.get();
       console.log('Obtiene departamento=>'+ snapshotResult);
       return snapshotResult;
     } catch (error) {
@@ -37,8 +51,16 @@ export class DeptoService {
 
   }
 
-  addDepartamento(depto: deptoInterface){
-    this.deptosCollection.add(depto);
-  }
+  async addDepartamento(depto: deptoInterface){
 
+    await this.deptosCollection.add(depto).then(ref =>{
+      console.log('Referencia id=>'+ ref.id);
+      this.deptoLocal.id = ref.id;
+    });
+    return this.deptoLocal.id;
+    }
+
+  async updateDepartamento(depto: deptoInterface){
+    this.deptosCollection.doc(depto.id).update(depto);
+  }
 }
