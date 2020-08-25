@@ -4,7 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection } from "@angular/fire/fire
 import { Observable, Subject } from "rxjs";
 import { map, takeUntil } from "rxjs/operators";
 import { AuthService } from "../../servicios/auth.service";
-import { InquilinoService  } from "../../servicios/inquilino.service";
+import { BusquedaService } from "../../servicios/busqueda.service";
 import { DeptoService } from "../../servicios/depto.service";
 import { VisitaService } from "../../servicios/visita.service";
 import { InquilinoInterface } from '../../models/inquilino.interface'
@@ -44,7 +44,7 @@ export class RegistroPage implements OnInit, OnDestroy {
 
   constructor(public authServices: AuthService,
     public router: Router,
-    public inquilonoServ: InquilinoService,
+    public busquedaServ: BusquedaService,
     public deptoServ: DeptoService,
     public loadingController: LoadingController,
     public alertController: AlertController,
@@ -68,7 +68,7 @@ export class RegistroPage implements OnInit, OnDestroy {
     this.inquilinoIdLocal = null;
 
     try {
-      await this.inquilonoServ.buscaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).then(resReg => {
+      await this.busquedaServ.getBusquedaInquilinoNombre(this.inquilinoLocal.nombre, this.inquilinoLocal.apellido).then(resReg => {
         console.log('Entra a validar=>' + resReg);
         registrosUsuario = resReg.docs.length;
         resReg.forEach(resRegUnit => {
@@ -119,13 +119,13 @@ export class RegistroPage implements OnInit, OnDestroy {
         }
 
         console.log("this.deptoLocal.id" + this.deptoLocal.id);
-        this.idUsuario = await this.inquilonoServ.agregarInquilino(this.inquilinoLocal);
+        this.idUsuario = await this.busquedaServ.addBusquedaInquilino(this.inquilinoLocal);
         this.uploadFotografiaPerfil();
         this.uploadFotografiaIdentifica();
         this.visitaLocal.idDepto = this.deptoLocal.id;
         this.visitaLocal.idUsuario = this.idUsuario;
         this.inquilinos = [];
-        this.visitaDepto.agregarVisita(this.visitaLocal);
+        this.visitaDepto.addVisita(this.visitaLocal);
         this.router.navigate(["/menu"]);
       }
       console.log("inquilino local 03::" + this.deptoLocal.id);

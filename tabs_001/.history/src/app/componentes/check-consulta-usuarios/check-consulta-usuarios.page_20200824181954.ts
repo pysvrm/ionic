@@ -1,6 +1,7 @@
 import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Router } from "@angular/router";
 import { AuthService } from "../../servicios/auth.service";
+import { BusquedaService } from "../../servicios/busqueda.service";
 import { InquilinoService  } from "../../servicios/inquilino.service";
 import { ChangeDetectionStrategy } from '@angular/compiler/src/core';
 import { Observable, Subject } from "rxjs";
@@ -23,6 +24,7 @@ export class CheckConsultaUsuariosPage implements OnDestroy, OnInit {
 
   constructor(public authServices: AuthService, 
               public router: Router, 
+              public busquedaServ: BusquedaService,
               public inquilonoServ: InquilinoService) { }
 
   public ngOnInit() {

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
-import { AuthService } from "../../servicios/auth.service";;
-import { InquilinoService  } from "../../servicios/inquilino.service";
+import { AuthService } from "../../servicios/auth.service";
+import { BusquedaService } from "../../servicios/busqueda.service";
 import { ChangeDetectionStrategy } from '@angular/compiler/src/core';
 import { Observable, Subject } from "rxjs";
 import { AngularFirestoreCollection } from '@angular/fire/firestore';
@@ -34,7 +34,7 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
   public router: Router, 
   public alertController: AlertController, 
   private datePipe: DatePipe,
-  public inquilonoServ: InquilinoService, 
+  public busquedaServ: BusquedaService, 
   public route: ActivatedRoute, 
   private nav: NavController, 
   private loadingController: LoadingController,
@@ -57,7 +57,7 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
     await loading.present();
     console.log("==this.idInquilino=="+this.idInquilino)
 
-    await this.inquilonoServ.buscaInquilinoId(this.idInquilino).then(resInquilino => {
+    await this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
       this.inquilinoLocal = resInquilino.data() as InquilinoInterface;      
       this.inquilinoLocal.id = resInquilino.id;
     });
@@ -86,7 +86,7 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
       
       if((resReg).empty){
         console.log('Sin registro en la Bd'); 
-        this.inquilonoServ.buscaInquilinoId(this.idInquilino).then(resInquilino => {
+        this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
           this.inquilinoLocal = resInquilino.data() as InquilinoInterface;
           this.inquilinoLocal.id = resInquilino.id;
         });
@@ -107,7 +107,7 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
         resReg.forEach(async resVisitUnit => {
           console.log('::Inicio CheckIn::'+resVisitUnit);
           const dataVisita: VisitaInterface = resVisitUnit.data() as VisitaInterface;
-          this.inquilonoServ.buscaInquilinoId(this.idInquilino).then(resInquilino => {
+          this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
             this.inquilinoLocal = resInquilino.data() as InquilinoInterface;
             this.inquilinoLocal.id = resInquilino.id;
           });
@@ -151,7 +151,7 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
             this.visitaLocal.idUsuario = this.idInquilino;
             console.log("::Inserta visita::");
             this.visitaDepto.agregarVisita(this.visitaLocal);
-            this.inquilonoServ.actualizaInqquilino(this.idInquilino, this.inquilinoLocal);
+            this.busquedaServ.updateBusquedaInqquilino(this.idInquilino, this.inquilinoLocal);
             this.backCheck();
           }
   
@@ -175,7 +175,7 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
           console.log("== No puede registrar checkout sin Checkin ==");
         } else if (dataVisita.checkIn != '0' && (dataVisita.checkOut == '0')) {
           console.log("==Registrar checkOut ==");
-          await this.inquilonoServ.buscaInquilinoId(this.idInquilino).then(resInquilino => {
+          await this.busquedaServ.getBusquedaInquilinoId(this.idInquilino).then(resInquilino => {
             this.inquilinoLocal = resInquilino.data() as InquilinoInterface;
             this.inquilinoLocal.id = resInquilino.id;
           });
@@ -199,7 +199,7 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
           this.visitaLocal.idDepto = this.inquilinoLocal.idDepto;
           this.visitaLocal.idUsuario = this.idInquilino;
           this.visitaDepto.actualizarVisita(this.visitaLocal.id, this.visitaLocal);
-          this.inquilonoServ.actualizaInqquilino(this.idInquilino, this.inquilinoLocal);
+          this.busquedaServ.updateBusquedaInqquilino(this.idInquilino, this.inquilinoLocal);
           this.router.navigate(["/menu"]);
         } else if (dataVisita.checkIn != '0' && (dataVisita.checkOut != '0')) {
           console.log("==Manda Error porque se debe registrar un nuevo checkin con una nueva visita 1-1 ==");
@@ -216,12 +216,12 @@ export class CheckDetailsPage implements OnDestroy, OnInit {
     await loading.present();
     if (this.idInquilino) {
       loading.dismiss();
-      this.inquilonoServ.actualizaInqquilino(this.idInquilino, this.inquilinoLocal);
+      this.busquedaServ.updateBusquedaInqquilino(this.idInquilino, this.inquilinoLocal);
       this.nav.navigateForward('/')
     } else {
 
       loading.dismiss();
-      this.inquilonoServ.agregarInquilino(this.inquilinoLocal);
+      this.busquedaServ.addBusquedaInquilino(this.inquilinoLocal);
       this.nav.navigateForward('/')
     }
   }

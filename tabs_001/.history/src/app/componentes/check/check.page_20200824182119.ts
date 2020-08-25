@@ -16,21 +16,10 @@ import { map, takeUntil } from "rxjs/operators";
 
 export class CheckPage implements OnDestroy, OnInit {
 
-
-constructor(public authServices: AuthService, public router: Router,
-  public inquilonoServ: InquilinoService) { }
-
-
-  public inquilinos: any = [];
-  public panelListaInquilinos: any = [];
-  public inquilinosCollection: AngularFirestoreCollection<InquilinoInterface>;
-  public unsubscribe: Subject<void> = new Subject();
-
-
 public  ngOnInit() {
     try {
       this.inquilinos = [];
-      this.inquilonoServ.buscaInquilinoTipo().snapshotChanges().pipe(takeUntil(this.unsubscribe)).subscribe(inquilinos => {
+      this.busquedaServ.getBusquedaInquilinos().snapshotChanges().pipe(takeUntil(this.unsubscribe)).subscribe(inquilinos => {
         inquilinos.map(inquilino => {
           const data: InquilinoInterface = inquilino.payload.doc.data() as InquilinoInterface;
           data.id = inquilino.payload.doc.id;
@@ -45,8 +34,21 @@ public  ngOnInit() {
   }
 
 
- 
-  
+  public inquilinos: any = [];
+  public panelListaInquilinos: any = [];
+  public inquilinosCollection: AngularFirestoreCollection<InquilinoInterface>;
+  public unsubscribe: Subject<void> = new Subject();
+
+  /**
+   *Creates an instance of CheckPage.
+   * @param {AuthService} authServices
+   * @param {Router} router
+   * @param {BusquedaService} busquedaServ
+   * @memberof CheckPage
+   */
+  constructor(public authServices: AuthService, public router: Router,
+    public inquilonoServ: InquilinoService) { }
+
   /**
    *
    *
